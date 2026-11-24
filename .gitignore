@@ -1,0 +1,6 @@
+.DS_Store
+macos/.build/
+macos/build/
+macos/camel_sidecar/.venv/
+macos/camel_sidecar/__pycache__/
+*.pyc

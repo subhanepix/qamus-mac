@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Qamus Desk</title>
+  <meta name="theme-color" content="#f6f5f1" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#17181a" media="(prefers-color-scheme: dark)">
+  <link rel="icon" href="../icon-512.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="desk" id="desk">
+    <!-- Library sidebar -->
+    <aside class="side" id="side" aria-label="Library">
+      <a href="#/desk" class="side-head" id="home-link" title="Home (Desk)" aria-label="Qamus, go to the Desk">
+        <span class="mark" lang="ar" aria-hidden="true">ق</span>
+        <span class="side-title">Qamus</span>
+      </a>
+
+      <button type="button" class="search-trigger" id="open-palette">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
+        <span>Look up…</span>
+        <kbd>⌘K</kbd>
+      </button>
+
+      <nav class="side-nav" aria-label="Sections">
+        <a href="#/desk" class="nav-item" data-route="desk">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1z"/></svg>
+          <span>Desk</span>
+        </a>
+        <a href="#/texts" class="nav-item" data-route="texts">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 3.5h7l3 3v10H5z"/><path d="M8 9.5h5M8 12.5h5"/></svg>
+          <span>Texts</span>
+          <span class="count muted-count" id="texts-count" hidden></span>
+        </a>
+        <a href="#/review" class="nav-item" data-route="review">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3.5" y="5" width="13" height="10" rx="1.5"/><path d="M6.5 3h7"/></svg>
+          <span>Review</span>
+          <span class="count" id="due-count" hidden></span>
+        </a>
+        <a href="#/vocab" class="nav-item" data-route="vocab">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 3h9a.5.5 0 0 1 .5.5v13.3a.3.3 0 0 1-.47.25L10 14l-4.53 3.05a.3.3 0 0 1-.47-.25V3.5a.5.5 0 0 1 .5-.5z"/></svg>
+          <span>Vocabulary</span>
+          <span class="count muted-count" id="vocab-count" hidden></span>
+        </a>
+        <a href="#/history" class="nav-item" data-route="history">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="M10 6.5V10l2.5 1.5"/></svg>
+          <span>History</span>
+        </a>
+      </nav>
+
+      <div class="side-section">
+        <div class="side-label">
+          <span>Recent texts</span>
+          <button type="button" class="icon-btn" id="new-text" title="New text (⌘N)" aria-label="New text">
+            <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 4.5v11M4.5 10h11"/></svg>
+          </button>
+        </div>
+        <ul class="text-list" id="text-list"></ul>
+      </div>
+
+      <div class="side-foot">
+        <div class="foot-stack">
+          <button type="button" class="sync-pill" id="sync-status" title="Sync saved words with your phone & alqamus.pages.dev">
+            <span class="dot"></span><span class="sync-lbl">Sync: Local only</span>
+          </button>
+          <span class="engine-status" id="engine-status"><span class="dot"></span><span>Loading lexicons…</span></span>
+        </div>
+        <button type="button" class="icon-btn" id="open-settings" title="Appearance & Sync" aria-label="Appearance and sync settings">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="2.5"/><path d="M10 2.5v2m0 11v2m7.5-7.5h-2m-11 0h-2m12.8-5.3-1.4 1.4m-7.8 7.8-1.4 1.4m10.6 0-1.4-1.4M6.1 6.1 4.7 4.7"/></svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Centre: desk / reader / entry / vocab / review / history -->
+    <main class="stage" id="stage" tabindex="-1">
+      <header class="stage-bar" id="stage-bar">
+        <button type="button" class="icon-btn only-narrow" id="toggle-side" aria-label="Show library">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3.5 5.5h13M3.5 10h13M3.5 14.5h13"/></svg>
+        </button>
+        <div class="crumbs" id="crumbs"></div>
+        <div class="stage-actions" id="stage-actions"></div>
+      </header>
+      <div class="stage-body" id="view"></div>
+      <section class="grammar-tray" id="grammar-tray" hidden aria-label="Grammar in context"></section>
+    </main>
+
+    <!-- Lookup inspector -->
+    <aside class="inspector" id="inspector" aria-label="Lookup" aria-live="polite">
+      <div class="insp-grip" aria-hidden="true"></div>
+      <div class="insp-body" id="insp"></div>
+    </aside>
+    <div class="scrim" id="scrim" hidden></div>
+  </div>
+
+  <!-- Phone tab bar (web / PWA): one-thumb navigation instead of the library drawer -->
+  <nav class="tabbar" id="tabbar" aria-label="Sections">
+    <a href="#/desk" class="tab-item" data-route="desk">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 9.5 10 4l7 5.5V16a1 1 0 0 1-1 1h-3.5v-4.5h-5V17H4a1 1 0 0 1-1-1z"/></svg>
+      <span>Desk</span>
+    </a>
+    <button type="button" class="tab-item" data-act="palette">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
+      <span>Look up</span>
+    </button>
+    <a href="#/review" class="tab-item" data-route="review">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3.5" y="5" width="13" height="10" rx="1.5"/><path d="M6.5 3h7"/></svg>
+      <span>Review</span>
+      <span class="count tab-badge" id="tab-due" hidden></span>
+    </a>
+    <a href="#/vocab" class="tab-item" data-route="vocab">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 3h9a.5.5 0 0 1 .5.5v13.3a.3.3 0 0 1-.47.25L10 14l-4.53 3.05a.3.3 0 0 1-.47-.25V3.5a.5.5 0 0 1 .5-.5z"/></svg>
+      <span>Vocab</span>
+    </a>
+    <a href="#/history" class="tab-item" data-route="history">
+      <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="6.5"/><path d="M10 6.5V10l2.5 1.5"/></svg>
+      <span>History</span>
+    </a>
+  </nav>
+
+  <!-- Command palette -->
+  <div class="palette-wrap" id="palette" hidden>
+    <div class="palette" role="dialog" aria-modal="true" aria-label="Look up">
+      <div class="palette-input">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.5" cy="8.5" r="5.5"/><path d="m13 13 4 4"/></svg>
+        <input id="palette-q" type="search" dir="auto" autocomplete="off" spellcheck="false"
+               placeholder="Arabic word, root (ك ت ب), English, or a command" aria-label="Look up">
+        <kbd>esc</kbd>
+      </div>
+      <ul class="palette-list" id="palette-list" role="listbox"></ul>
+    </div>
+  </div>
+
+  <!-- Settings popover -->
+  <div class="pop" id="settings" hidden role="dialog" aria-label="Appearance">
+    <div class="pop-row">
+      <span class="pop-label">Appearance</span>
+      <div class="seg" data-setting="theme">
+        <button type="button" data-v="system">Auto</button>
+        <button type="button" data-v="light">Light</button>
+        <button type="button" data-v="dark">Dark</button>
+      </div>
+    </div>
+    <div class="pop-row">
+      <span class="pop-label">Arabic type</span>
+      <div class="seg" data-setting="arFont">
+        <button type="button" data-v="amiri" class="ar-sample amiri">Amiri</button>
+        <button type="button" data-v="naskh" class="ar-sample naskh">Naskh</button>
+        <button type="button" data-v="system" class="ar-sample sys">System</button>
+      </div>
+    </div>
+    <div class="pop-row">
+      <span class="pop-label">Reading size</span>
+      <div class="seg" data-setting="size">
+        <button type="button" data-v="s">S</button>
+        <button type="button" data-v="m">M</button>
+        <button type="button" data-v="l">L</button>
+        <button type="button" data-v="xl">XL</button>
+      </div>
+    </div>
+    <div class="pop-sep"></div>
+    <div class="pop-row" id="sync-settings-box"></div>
+  </div>
+
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <script src="../merge.js"></script>
+  <script src="../sync.js"></script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

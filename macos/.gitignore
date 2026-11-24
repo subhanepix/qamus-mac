@@ -1,0 +1,5 @@
+.build/
+build/
+.swiftpm/
+camel_sidecar/.venv/
+camel_sidecar/__pycache__/
